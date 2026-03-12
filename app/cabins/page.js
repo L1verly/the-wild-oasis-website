@@ -1,9 +1,7 @@
-import Navigation from "../components/Navigation";
-
-export default function Page() {
+export default async function Page() {
   return (
     <div>
-      <h1>Cabins</h1>
+      <h1>Cabins page</h1>
     </div>
   );
 }
