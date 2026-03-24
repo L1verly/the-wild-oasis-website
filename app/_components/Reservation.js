@@ -2,6 +2,9 @@ import { getBookedDatesByCabinId, getSettings } from "@/_lib/data-service";
 import DateSelector from "./DateSelector";
 import ReservationForm from "./ReservationForm";
 import { createSupabaseServerClient } from "@/_lib/supabase";
+import LoginMessage from "./LoginMessage";
+import { auth } from "@/_lib/auth";
+import { headers } from "next/headers";
 
 export default async function Reservation({ cabin }) {
   const supabase = await createSupabaseServerClient();
@@ -9,6 +12,9 @@ export default async function Reservation({ cabin }) {
     getSettings(supabase),
     getBookedDatesByCabinId(supabase, cabin.id),
   ]);
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
 
   return (
     <div className="grid grid-cols-2 border border-primary-800 min-h-100">
@@ -17,7 +23,9 @@ export default async function Reservation({ cabin }) {
         bookedDates={bookedDates}
         cabin={cabin}
       />
-      <ReservationForm cabin={cabin} />
+      {session?.user ?
+        <ReservationForm cabin={cabin} />
+      : <LoginMessage />}
     </div>
   );
 }
