@@ -7,9 +7,6 @@ export default async function Navigation() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
-  // if (!session) {
-  //   redirect("/sign-in");
-  // }
 
   return (
     <nav className="z-10 text-xl">
@@ -37,7 +34,9 @@ export default async function Navigation() {
               className="hover:text-accent-400 transition-color flex items-center gap-4"
             >
               <Image
-                className="h-8 rounded-full"
+                className="rounded-full"
+                height={36}
+                width={36}
                 src={session.user.image}
                 alt={session.user.name}
                 referrerPolicy="no-referrer"
