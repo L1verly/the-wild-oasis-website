@@ -8,7 +8,3 @@ export const signIn = async () => {
     callbackURL: "/account",
   });
 };
-
-export const signOut = async () => {
-  await authClient.signOut();
-};
