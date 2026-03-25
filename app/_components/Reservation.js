@@ -1,7 +1,7 @@
 import { getBookedDatesByCabinId, getSettings } from "@/_lib/data-service";
 import DateSelector from "./DateSelector";
 import ReservationForm from "./ReservationForm";
-import { createSupabaseServerClient } from "@/_lib/supabase";
+import { createSupabaseServerClient } from "@/_lib/supabase/supabase-server";
 import LoginMessage from "./LoginMessage";
 import { auth } from "@/_lib/auth";
 import { headers } from "next/headers";

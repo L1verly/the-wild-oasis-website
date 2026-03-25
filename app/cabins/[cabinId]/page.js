@@ -2,10 +2,8 @@ import Cabin from "@/_components/Cabin";
 import Reservation from "@/_components/Reservation";
 import Spinner from "@/_components/Spinner";
 import { getCabin, getCabins } from "@/_lib/data-service";
-import {
-  createSupabaseFrontendClient,
-  createSupabaseServerClient,
-} from "@/_lib/supabase";
+import { createSupabaseFrontendClient } from "@/_lib/supabase/supabase-client";
+import { createSupabaseServerClient } from "@/_lib/supabase/supabase-server";
 import { Suspense } from "react";
 
 export async function generateMetadata({ params }) {

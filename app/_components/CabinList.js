@@ -1,6 +1,6 @@
 import { getCabins } from "@/_lib/data-service";
 import CabinCard from "./CabinCard";
-import { createSupabaseServerClient } from "@/_lib/supabase";
+import { createSupabaseServerClient } from "@/_lib/supabase/supabase-server";
 
 export default async function CabinList({ filter }) {
   const supabase = await createSupabaseServerClient();

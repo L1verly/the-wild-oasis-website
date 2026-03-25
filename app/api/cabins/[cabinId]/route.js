@@ -1,5 +1,5 @@
 import { getBookedDatesByCabinId, getCabin } from "@/_lib/data-service";
-import { createSupabaseServerClient } from "@/_lib/supabase";
+import { createSupabaseServerClient } from "@/_lib/supabase/supabase-server";
 
 export async function GET(request, { params }) {
   const { cabinId } = params;

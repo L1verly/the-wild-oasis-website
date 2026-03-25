@@ -3,7 +3,7 @@ import about1Img from "@/public/about-1.jpg";
 import about2Img from "@/public/about-2.jpg";
 import Link from "next/link";
 import { getCabins } from "@/_lib/data-service";
-import { createSupabaseFrontendClient } from "@/_lib/supabase";
+import { createSupabaseFrontendClient } from "@/_lib/supabase/supabase-client";
 
 // Once a day
 export const revalidate = 86400;
