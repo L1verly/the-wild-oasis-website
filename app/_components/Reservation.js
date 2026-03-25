@@ -24,7 +24,7 @@ export default async function Reservation({ cabin }) {
         cabin={cabin}
       />
       {session?.user ?
-        <ReservationForm cabin={cabin} />
+        <ReservationForm cabin={cabin} user={session.user} />
       : <LoginMessage />}
     </div>
   );
