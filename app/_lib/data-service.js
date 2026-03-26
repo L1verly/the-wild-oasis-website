@@ -62,22 +62,22 @@ export async function getGuest(supabase, email) {
 }
 
 export async function getBooking(supabase, id) {
-  const { data, error, count } = await supabase
+  const { data, error } = await supabase
     .from("bookings")
-    .select("*")
+    .select("*, cabins (maxCapacity)")
     .eq("id", id)
     .single();
 
   if (error) {
     console.error(error);
-    throw new Error("Booking could not get loaded");
+    throw new Error("Booking could not be loaded");
   }
 
   return data;
 }
 
 export async function getBookings(supabase, guestId) {
-  const { data, error, count } = await supabase
+  const { data, error } = await supabase
     .from("bookings")
     // We actually also need data on the cabins as well. But let's ONLY take the data that we actually need, in order to reduce downloaded data.
     .select(

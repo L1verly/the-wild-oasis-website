@@ -4,7 +4,12 @@ import { cookies, headers } from "next/headers";
 import { auth } from "./auth";
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "./supabase/supabase-server";
-import { deleteBooking, getBookings, updateGuest } from "./data-service";
+import {
+  deleteBooking,
+  getBookings,
+  updateBooking,
+  updateGuest,
+} from "./data-service";
 import { revalidatePath } from "next/cache";
 
 export const signOutAction = async () => {
@@ -43,7 +48,7 @@ export async function deleteReservation(bookingId) {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
-  if (!session) throw new Error("You must be logged in to change reservation");
+  if (!session) throw new Error("You must be logged in to remove reservation");
 
   const supabase = await createSupabaseServerClient();
 
@@ -55,4 +60,22 @@ export async function deleteReservation(bookingId) {
   await deleteBooking(supabase, bookingId);
 
   revalidatePath("/account/reservations");
+}
+
+export async function updateReservation(bookingId, formData) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  if (!session) throw new Error("You must be logged in to change reservation");
+
+  const supabase = await createSupabaseServerClient();
+
+  const updateData = {
+    numGuests: formData.get("numGuests"),
+    observations: formData.get("observations"),
+  };
+
+  await updateBooking(supabase, bookingId, updateData);
+
+  redirect("/account/reservations");
 }
