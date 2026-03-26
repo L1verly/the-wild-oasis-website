@@ -17,5 +17,5 @@ export async function middleware(request) {
 }
 
 export const config = {
-  matcher: ["/account"], // Apply middleware to specific routes
+  matcher: ["/account/:path*"], // Apply middleware to specific routes
 };
