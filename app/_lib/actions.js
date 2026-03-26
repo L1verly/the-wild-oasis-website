@@ -5,6 +5,7 @@ import { auth } from "./auth";
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "./supabase/supabase-server";
 import { updateGuest } from "./data-service";
+import { revalidatePath } from "next/cache";
 
 export const signOutAction = async () => {
   await auth.api.signOut({
@@ -34,4 +35,6 @@ export async function updateProfile(formData) {
 
   const supabase = await createSupabaseServerClient();
   await updateGuest(supabase, session.user.guestId, updateData);
+
+  revalidatePath("/account/profile");
 }
