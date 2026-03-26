@@ -1,11 +1,19 @@
-export default function UpdateProfileForm({ children }) {
-  const countryFlag = "pt.jpg";
+import { updateProfile } from "@/_lib/actions";
+import Image from "next/image";
+
+export default function UpdateProfileForm({ guest, children }) {
+  const { countryFlag, fullName, email, nationality, nationalID } = guest;
   return (
-    <form className="bg-primary-900 py-8 px-12 text-lg flex gap-6 flex-col">
+    <form
+      action={updateProfile}
+      className="bg-primary-900 py-8 px-12 text-lg flex gap-6 flex-col"
+    >
       <div className="space-y-2">
         <label>Full name</label>
         <input
           disabled
+          defaultValue={fullName}
+          name="fullName"
           className="px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm disabled:cursor-not-allowed disabled:bg-gray-600 disabled:text-gray-400"
         />
       </div>
@@ -14,6 +22,8 @@ export default function UpdateProfileForm({ children }) {
         <label>Email address</label>
         <input
           disabled
+          defaultValue={email}
+          name="email"
           className="px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm disabled:cursor-not-allowed disabled:bg-gray-600 disabled:text-gray-400"
         />
       </div>
@@ -21,11 +31,15 @@ export default function UpdateProfileForm({ children }) {
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <label htmlFor="nationality">Where are you from?</label>
-          {/* <Image
+          {countryFlag && (
+            <Image
               src={countryFlag}
               alt="Country flag"
-              className="h-5 rounded-sm"
-            /> */}
+              className="rounded-sm"
+              height={30}
+              width={30}
+            />
+          )}
         </div>
         {children}
       </div>

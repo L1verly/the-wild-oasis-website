@@ -1,12 +1,21 @@
 import SelectCountry from "@/_components/SelectCountry";
 import UpdateProfileForm from "@/_components/UpdateProfileForm";
+import { auth } from "@/_lib/auth";
+import { getGuest } from "@/_lib/data-service";
+import { createSupabaseServerClient } from "@/_lib/supabase/supabase-server";
+import { headers } from "next/headers";
 
 export const metadata = {
   title: "Update profile",
 };
 
-export default function Page() {
-  const nationality = "portugal";
+export default async function Page() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  const supabase = await createSupabaseServerClient();
+  const guest = await getGuest(supabase, session.user.email);
 
   return (
     <div>
@@ -17,12 +26,12 @@ export default function Page() {
         Providing the following information will make your check-in process
         faster and smoother. See you soon!
       </p>
-      <UpdateProfileForm>
+      <UpdateProfileForm guest={guest}>
         <SelectCountry
           name="nationality"
           id="nationality"
           className="px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm"
-          defaultCountry={nationality}
+          defaultCountry={guest.nationality}
         />
       </UpdateProfileForm>
     </div>
