@@ -4,7 +4,7 @@ import { cookies, headers } from "next/headers";
 import { auth } from "./auth";
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "./supabase/supabase-server";
-import { updateGuest } from "./data-service";
+import { deleteBooking, getBookings, updateGuest } from "./data-service";
 import { revalidatePath } from "next/cache";
 
 export const signOutAction = async () => {
@@ -37,4 +37,22 @@ export async function updateProfile(formData) {
   await updateGuest(supabase, session.user.guestId, updateData);
 
   revalidatePath("/account/profile");
+}
+
+export async function deleteReservation(bookingId) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  if (!session) throw new Error("You must be logged in to change reservation");
+
+  const supabase = await createSupabaseServerClient();
+
+  const guestBookings = await getBookings(supabase, session.user.guestId);
+  const guestBookingsIds = guestBookings.map((booking) => booking.id);
+  if (!guestBookingsIds.includes(bookingId))
+    throw new Error("You are not allowed to delete this booking");
+
+  await deleteBooking(supabase, bookingId);
+
+  revalidatePath("/account/reservations");
 }
