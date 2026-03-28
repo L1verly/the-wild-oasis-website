@@ -70,7 +70,8 @@ function DateSelector({ settings, bookedDates, cabin }) {
                 <span>&times;</span> <span>{numNights}</span>
               </p>
               <p>
-                <span className="text-lg font-bold uppercase">Total</span>{" "}
+                <span className="text-lg font-bold uppercase">Total </span>
+                {/* ADD BREAKFAST */}
                 <span className="text-2xl font-semibold">${cabinPrice}</span>
               </p>
             </>

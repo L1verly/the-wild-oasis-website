@@ -5,6 +5,7 @@ import { auth } from "./auth";
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "./supabase/supabase-server";
 import {
+  createBooking,
   deleteBooking,
   getBookings,
   updateBooking,
@@ -78,4 +79,33 @@ export async function updateReservation(bookingId, formData) {
   await updateBooking(supabase, bookingId, updateData);
 
   redirect("/account/reservations");
+}
+
+export async function createReservation(bookingData, formData) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  if (!session) throw new Error("You must be logged in to create reservation");
+
+  if (!bookingData.startDate || !bookingData.endDate)
+    throw Error("You need to set the date range of your stay");
+
+  const updateData = {
+    guestId: session.user.guestId,
+    numGuests: Number(formData.get("numGuests")),
+    observations: formData.get("observations").slice(0, 1000),
+    extrasPrice: 0, // TODO
+    totalPrice: bookingData.cabinPrice,
+    isPaid: false,
+    hasBreakfast: formData.get("hasBreakfast") === "on",
+    ...bookingData,
+    status: "unconfirmed",
+  };
+
+  const supabase = await createSupabaseServerClient();
+  await createBooking(supabase, updateData);
+
+  revalidatePath(`/cabins/${bookingData.cabinId}`);
+
+  redirect("/cabins/thankyou");
 }
