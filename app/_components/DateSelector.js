@@ -9,6 +9,7 @@ import {
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { useReservation } from "./ReservationContext";
+import { setLocalHoursToUTCOffset } from "@/_lib/utils";
 
 function isAlreadyBooked(range, datesArr) {
   return (
@@ -24,9 +25,12 @@ function DateSelector({ settings, bookedDates, cabin }) {
   const { range, setRange, resetRange } = useReservation();
   const displayedRange = isAlreadyBooked(range, bookedDates) ? {} : range;
 
+  const startDate = setLocalHoursToUTCOffset(displayedRange?.from);
+  const endDate = setLocalHoursToUTCOffset(displayedRange?.to);
+
   const { regularPrice, discount } = cabin;
 
-  const numNights = differenceInDays(displayedRange?.to, displayedRange?.from);
+  const numNights = differenceInDays(endDate, startDate);
   const cabinPrice = numNights * regularPrice - discount;
 
   const { minBookingLength, maxBookingLength } = settings;
@@ -78,7 +82,7 @@ function DateSelector({ settings, bookedDates, cabin }) {
           : null}
         </div>
 
-        {displayedRange?.from || displayedRange?.to ?
+        {startDate || endDate ?
           <button
             className="border border-primary-800 py-2 px-4 text-sm font-semibold hover:bg-accent-300 cursor-pointer"
             onClick={resetRange}
