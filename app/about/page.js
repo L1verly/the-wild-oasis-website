@@ -1,6 +1,6 @@
 import Image from "next/image";
-import about1Img from "@/public/about-1.jpg";
-import about2Img from "@/public/about-2.jpg";
+import about1Img from "@/public/about-1.png";
+import about2Img from "@/public/about-2.png";
 import Link from "next/link";
 import { getCabins } from "@/_lib/data-service";
 import { createSupabaseFrontendClient } from "@/_lib/supabase/supabase-client";
